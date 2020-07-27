@@ -44,7 +44,10 @@
                   <i class="fas fa-star fa-xs"></i>
                 </span>
                 <a href="./restaurants/{{ this._id }}">detail</a>
-                <a href="./todos/{{ this._id }}/edit">edit</a><!-- 加入這行 -->
+                <a href="./restaurants/{{ this._id }}/edit">edit</a> <!-- 避免路由重複 -->
+                <form action="./restaurants/{{ this._id }}/delete" method="POST" style="display: inline">
+                  <button type="submit"> delete </button>
+                </form>
 
               </div>
             </div>

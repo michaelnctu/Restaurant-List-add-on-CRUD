@@ -4,6 +4,8 @@ const exphbs = require('express-handlebars')  //handlebars
 const port = 3000
 const mongoose = require('mongoose')
 
+const bodyParser = require('body-parser')
+
 const restList = require('./restaurant.json')
 
 const Restaurant = require('./models/restaurant') // 載入 restaurant model
@@ -25,6 +27,9 @@ db.once('open', () => {
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
+app.use(bodyParser.urlencoded({ extended: true }))
+
+
 //setting static files
 app.use(express.static('public'))
 
@@ -39,6 +44,48 @@ app.get('/', (req, res) => {
     .catch(error => console.error(error)) // 錯誤處理
 })
 
+
+//detail
+app.get('/restaurants/:id', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .lean()
+    .then(restaurant => res.render('detail', { restaurant }))
+    .catch(error => console.log(error))
+})
+
+//edit
+app.get('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(error => console.log(error))
+})
+
+//edit
+app.post('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
+  return Restaurant.findById(id)
+    .then(restaurant => {
+      restaurant.name = name
+      return restaurant.save()
+    })
+    .then(() => res.redirect('/restaurants/${id}'))
+    .catch(error => console.log(error))
+})
+
+//delete
+app.post('/restaurants/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .then(restaurant => restaurant.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+
 // routes setting
 
 // app.get('/', (req, res) => {
@@ -50,13 +97,20 @@ app.get('/', (req, res) => {
 //   res.render('show', { restaurant: restaurant[0] })
 // })
 
-// app.get('/search', (req, res) => {
-//   const keyword = req.query.keyword
-//   const restaurants = restList.results.filter(restaurant => {
-//     return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
-//   })
-//   res.render('index', { restaurants: restaurants, keyword: req.query.keyword })
-// })
+app.get('/restaurants/:restaurant_id', (req, res) => {
+  // console.log(req.params.restaurant_id)
+  const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.restaurant_id)
+  res.render('show', { restaurant: restaurant })
+})
+
+
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword
+  const restaurants = restList.results.filter(restaurant => {
+    return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
+  })
+  res.render('index', { restaurants: restaurants, keyword: req.query.keyword })
+})
 
 // start and listen on the Express server
 app.listen(port, () => {
