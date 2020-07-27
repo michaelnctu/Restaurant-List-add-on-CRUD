@@ -12,7 +12,7 @@
 * Express-Handlebars: v5.1.0
 
 ## 安裝與執行步驟
-* 將專案clone到本地端 https://github.com/michaelnctu/Restaurant_list-Remote.git
+* 將專案clone到本地端 https://github.com/michaelnctu/Restaurant-List-add-on-CRUD.git
 * 進入專案 cd resturant_list
 * 下載package npm install
 * 透過nodemon啟動專案 npm run dev
