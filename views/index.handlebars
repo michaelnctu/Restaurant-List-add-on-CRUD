@@ -1,4 +1,5 @@
 <!-- ./views/index.handlebars -->
+{{!-- restaurants --}}
 
 <div class="container mt-5">
 
@@ -28,7 +29,7 @@
       <div class="col-md-10 col-12 mx-auto">
         <div class="card-columns">
           {{#each restaurants}}
-          <a href="/restaurants/{{this.id}}" class="text-secondary">
+          <a href="./restaurants/{{this.id}}" class="text-secondary">
             <div class="card mb-3">
               <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
               <div class="card-body p-3">
@@ -42,6 +43,8 @@
                   4.1
                   <i class="fas fa-star fa-xs"></i>
                 </span>
+                <a href="./restaurants/{{ this._id }}">detail</a>
+                <a href="./todos/{{ this._id }}/edit">edit</a><!-- 加入這行 -->
 
               </div>
             </div>

@@ -7,7 +7,7 @@ const restaurantSchema = new Schema({
   },
   name_en: {
     type: String,
-    required: false
+    required: true
   },
   category: {
     type: String,
@@ -27,15 +27,15 @@ const restaurantSchema = new Schema({
   },
   google_map: {
     type: String,
-    required: false
+    required: true
   },
   rating: {
     type: String,
-    required: false
+    required: true
   },
   description: {
     type: String,
-    required: false
+    required: true
   }
 })
 module.exports = mongoose.model('Restaurant', restaurantSchema)
