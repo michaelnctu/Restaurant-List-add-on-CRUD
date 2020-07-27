@@ -86,24 +86,17 @@ app.post('/restaurants/:id/delete', (req, res) => {
 })
 
 
-// routes setting
-
-// app.get('/', (req, res) => {
-//   res.render('index', { restaurants: restList.results })
-// })
-
-// app.get('/restaurants/:restaurant_id', (req, res) => {
-//   const restaurant = restList.results.filter(restaurant => restaurant.id == req.params.restaurant_id)
-//   res.render('show', { restaurant: restaurant[0] })
-// })
-
-app.get('/restaurants/:restaurant_id', (req, res) => {
+//點擊圖片
+app.get('/restaurants/:id/show', (req, res) => {
   // console.log(req.params.restaurant_id)
-  const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.restaurant_id)
-  res.render('show', { restaurant: restaurant })
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .lean()
+    .then(restaurant => res.render('detail', { restaurant }))
+    .catch(error => console.log(error))
 })
 
-
+//search bar
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
   const restaurants = restList.results.filter(restaurant => {
@@ -114,5 +107,5 @@ app.get('/search', (req, res) => {
 
 // start and listen on the Express server
 app.listen(port, () => {
-  console.log(`Express is listening on localhost:${port}`)
+  console.log(`Express is listening on http://localhost:${port}`)
 })
